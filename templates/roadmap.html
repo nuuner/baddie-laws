@@ -228,13 +228,13 @@
               requires: 'Personal Standards' },
             { id: 8, tier: 2, law: 'L3', title: 'Relatability', x: 690, y: 520,
               desc: 'Pick one unconventional hobby or trait you genuinely enjoy. Mention it casually once per social interaction.',
-              requires: 'Visual Identity' },
+              requires: 'Personal Standards' },
             { id: 4, tier: 2, law: 'L1', title: 'Speech Editing', x: 1000, y: 520,
               desc: 'Permanent speech purge. Adopt a vocabulary free of "Just," "I think," and "I\'m sorry." Replace them with declarative statements and comfortable silence.',
               requires: 'Posture Practice' },
             { id: 7, tier: 2, law: 'L2', title: 'Compliment Acceptance', x: 1310, y: 520,
               desc: 'When complimented, say "Thank you" and stop. No self-deprecation or "Oh, this old thing?"',
-              requires: 'Speech Editing' },
+              requires: 'Self-Validation' },
             { id: 5, tier: 2, law: 'L4', title: 'Response Delay', x: 1620, y: 520,
               desc: 'Wait two full seconds before responding to any question. Sit with the silence.',
               requires: 'Self-Validation' },
@@ -283,8 +283,8 @@
         ];
 
         const connections = [
-            // T1→T2 and T2 internal
-            [1, 6], [2, 4], [3, 5], [4, 7], [6, 8],
+            // T1→T2
+            [1, 6], [1, 8], [2, 4], [3, 7], [3, 5],
             // T2→T3 (adjacent layers only)
             [5, 9], [7, 10], [8, 11], [4, 12], [4, 13], [6, 14],
             // T3→T4 (adjacent layers only)
