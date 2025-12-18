@@ -70,7 +70,6 @@
 
         .quiz-link {
             display: inline-block;
-            margin-top: 60px;
             padding: 16px 32px;
             background-color: #fff;
             color: #000;
@@ -84,6 +83,31 @@
 
         .quiz-link:hover {
             background-color: #ddd;
+        }
+
+        .links {
+            display: flex;
+            gap: 16px;
+            margin-top: 60px;
+        }
+
+        .secondary-link {
+            display: inline-block;
+            padding: 16px 32px;
+            background-color: transparent;
+            color: #999;
+            text-decoration: none;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 6px;
+            border: 1px solid #333;
+            transition: all 0.2s ease;
+        }
+
+        .secondary-link:hover {
+            color: #fff;
+            border-color: #555;
         }
     </style>
 </head>
@@ -134,7 +158,10 @@
             </div>
         </div>
         </div>
-        <a href="/quiz" class="quiz-link">Evaluate Yourself</a>
+        <div class="links">
+            <a href="/quiz" class="quiz-link">Evaluate Yourself</a>
+            <a href="/roadmap" class="secondary-link">View Roadmap</a>
+        </div>
     </div>
 </body>
 </html>

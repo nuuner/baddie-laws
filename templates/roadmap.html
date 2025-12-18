@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Baddie Roadmap - Skill Tree</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Baddie Roadmap">
+    <meta property="og:description" content="Master the 6 Laws through 20 progressive challenges. Your path to Supreme Baddie status.">
+    <meta name="theme-color" content="#000000">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Baddie Roadmap">
+    <meta name="twitter:description" content="Master the 6 Laws through 20 progressive challenges. Your path to Supreme Baddie status.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        .header h1 {
+            font-family: cursive;
+            font-size: 1.5rem;
+        }
+
+        .back-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 44px;
+            height: 44px;
+            border: 1px solid #333;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .control-btn:hover {
+            background: #222;
+            border-color: #555;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            color: #444;
+            font-size: 0.8rem;
+            z-index: 100;
+        }
+
+        #tree-container {
+            width: 100vw;
+            height: 100vh;
+            cursor: grab;
+        }
+
+        #tree-container:active {
+            cursor: grabbing;
+        }
+
+        #tree-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .connection {
+            fill: none;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .node-rect {
+            fill: #111;
+            stroke: #333;
+            stroke-width: 1;
+        }
+
+        .node-rect.apex {
+            fill: #1a1a1a;
+            stroke: #555;
+            stroke-width: 2;
+        }
+
+        .node-number {
+            font-size: 12px;
+            fill: #444;
+            font-weight: bold;
+        }
+
+        .node-law {
+            font-size: 11px;
+            fill: #666;
+            font-weight: bold;
+        }
+
+        .node-title {
+            font-size: 13px;
+            fill: #fff;
+            font-weight: bold;
+        }
+
+        .node-req {
+            font-size: 9px;
+            fill: #555;
+        }
+
+        .tier-label {
+            font-size: 18px;
+            fill: #666;
+            font-weight: bold;
+            letter-spacing: 4px;
+        }
+
+        .tier-subtitle {
+            font-size: 12px;
+            fill: #666;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            .hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Skill Tree</h1>
+        <a href="/" class="back-link">← Back to Laws</a>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="zoom-in">+</button>
+        <button class="control-btn" id="zoom-out">−</button>
+        <button class="control-btn" id="reset">⌂</button>
+    </div>
+
+    <div class="hint">Drag to pan • Scroll to zoom</div>
+
+    <div id="tree-container">
+        <svg id="tree-svg" viewBox="0 0 2000 1800">
+            <defs>
+                <filter id="text-glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feFlood flood-color="black" result="flood"/>
+                    <feComposite in="flood" in2="SourceGraphic" operator="in" result="mask"/>
+                    <feGaussianBlur in="mask" stdDeviation="12" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <g id="tree-content"></g>
+        </svg>
+    </div>
+
+    <script>
+        const nodeWidth = 280;
+        const nodeHeight = 118;
+        const apexWidth = 320;
+        const apexHeight = 150;
+
+        const nodes = [
+            // Tier 1: Foundation (3 nodes, centered)
+            { id: 1, tier: 1, law: 'L6', title: 'Personal Standards', x: 690, y: 280,
+              desc: 'Maintain a mental boundary filter that triggers immediate distance when a personal standard is breached.',
+              requires: 'None' },
+            { id: 2, tier: 1, law: 'L1', title: 'Posture Practice', x: 1000, y: 280,
+              desc: 'Practice confident posture (shoulders back, chin level) for 2 hours daily, especially when alone.',
+              requires: 'None' },
+            { id: 3, tier: 1, law: 'L1', title: 'Self-Validation', x: 1310, y: 280,
+              desc: 'Default to internal approval. Execute choices in style, work, and life without external polling.',
+              requires: 'None' },
+
+            // Tier 2: External Expression (5 nodes) - reordered to minimize crossings
+            { id: 6, tier: 2, law: 'L5', title: 'Visual Identity', x: 380, y: 520,
+              desc: 'Identify a visual signature (a specific color, accessory, or fit). Wear it consistently to anchor your new identity.',
+              requires: 'Personal Standards' },
+            { id: 8, tier: 2, law: 'L3', title: 'Relatability', x: 690, y: 520,
+              desc: 'Pick one unconventional hobby or trait you genuinely enjoy. Mention it casually once per social interaction.',
+              requires: 'Visual Identity' },
+            { id: 4, tier: 2, law: 'L1', title: 'Speech Editing', x: 1000, y: 520,
+              desc: 'Permanent speech purge. Adopt a vocabulary free of "Just," "I think," and "I\'m sorry." Replace them with declarative statements and comfortable silence.',
+              requires: 'Posture Practice' },
+            { id: 7, tier: 2, law: 'L2', title: 'Compliment Acceptance', x: 1310, y: 520,
+              desc: 'When complimented, say "Thank you" and stop. No self-deprecation or "Oh, this old thing?"',
+              requires: 'Speech Editing' },
+            { id: 5, tier: 2, law: 'L4', title: 'Response Delay', x: 1620, y: 520,
+              desc: 'Wait two full seconds before responding to any question. Sit with the silence.',
+              requires: 'Self-Validation' },
+
+            // Tier 3: Social Strategy (6 nodes) - reordered to minimize crossings
+            { id: 14, tier: 3, law: 'L5', title: 'New Introduction', x: 225, y: 760,
+              desc: 'Pivot your social resume. Introduce yourself based on where you are going, not your past history.',
+              requires: 'Visual Identity' },
+            { id: 11, tier: 3, law: 'L3', title: 'Topic Redirection', x: 535, y: 760,
+              desc: 'When a conversation gets too focused on you, pivot the topic to the other person using a relatable observation.',
+              requires: 'Relatability' },
+            { id: 12, tier: 3, law: 'L6', title: 'Declining Requests', x: 845, y: 760,
+              desc: 'Say "No" to an invitation or request without providing an excuse. "I can\'t make it" is a complete sentence.',
+              requires: 'Speech Editing' },
+            { id: 13, tier: 3, law: 'L1', title: 'Eye Contact', x: 1155, y: 760,
+              desc: 'Master the unwavering gaze. Hold eye contact throughout the duration of a thought or sentence without glancing down or away.',
+              requires: 'Speech Editing' },
+            { id: 10, tier: 3, law: 'L2', title: 'Silent Work', x: 1465, y: 760,
+              desc: 'Practice invisible excellence. Allow the quality of your work to speak louder than your status updates.',
+              requires: 'Compliment Acceptance' },
+            { id: 9, tier: 3, law: 'L4', title: 'Brief Answers', x: 1775, y: 760,
+              desc: 'When asked about your plans, give a 3-word answer. Do not justify or elaborate.',
+              requires: 'Response Delay' },
+
+            // Tier 4: Mastery (5 nodes) - reordered to minimize crossings
+            { id: 18, tier: 4, law: 'L5', title: 'Style Change', x: 380, y: 1000,
+              desc: 'Embrace fluid identity. Shift your aesthetics or routines without the need for a rebranding announcement.',
+              requires: 'New Introduction' },
+            { id: 15, tier: 4, law: 'L6', title: 'Selective Availability', x: 690, y: 1000,
+              desc: 'Prioritize your own schedule over social pressure. If a personal commitment overlaps with an event, leave early or arrive later without feeling the need to explain your timeline.',
+              requires: 'Declining Requests' },
+            { id: 19, tier: 4, law: 'L1/L4', title: 'Silent Observation', x: 1000, y: 1000,
+              desc: 'Prioritize observational entry. Always process the energy of a room before contributing your own.',
+              requires: 'Eye Contact' },
+            { id: 16, tier: 4, law: 'L2', title: 'Mistake Recovery', x: 1310, y: 1000,
+              desc: 'Handle a public mistake (a spill, a trip, a tech error) with composure and zero explanation. Proceed as if it were planned.',
+              requires: 'Silent Work' },
+            { id: 17, tier: 4, law: 'L4', title: 'Digital Silence', x: 1620, y: 1000,
+              desc: 'Normalize digital autonomy. Move in and out of the digital world without providing a status of your whereabouts.',
+              requires: 'Brief Answers' },
+
+            // Apex (1 node, centered)
+            { id: 20, tier: 5, law: '★', title: 'Self-Assurance', x: 1000, y: 1240,
+              desc: 'You no longer actively practice the laws. You move through the world with the assumption that your space is earned and your time is valuable.',
+              requires: 'All 19 previous nodes' }
+        ];
+
+        const connections = [
+            // T1→T2 and T2 internal
+            [1, 6], [2, 4], [3, 5], [4, 7], [6, 8],
+            // T2→T3 (adjacent layers only)
+            [5, 9], [7, 10], [8, 11], [4, 12], [4, 13], [6, 14],
+            // T3→T4 (adjacent layers only)
+            [12, 15], [10, 16], [9, 17], [14, 18], [13, 19],
+            // T4→T5
+            [15, 20], [16, 20], [17, 20], [18, 20], [19, 20]
+        ];
+
+        const tierLabels = [
+            { label: 'TIER 1: FOUNDATION', subtitle: 'Fundamental habits required to support the higher levels.', y: 140 },
+            { label: 'TIER 2: EXPRESSION', subtitle: 'Turning internal confidence into an outward presence.', y: 380 },
+            { label: 'TIER 3: STRATEGY', subtitle: 'Managing how others perceive you.', y: 620 },
+            { label: 'TIER 4: MASTERY', subtitle: 'Where the laws blend into a single persona.', y: 860 },
+            { label: 'COMPLETION', subtitle: '', y: 1120 }
+        ];
+
+        const treeContent = document.getElementById('tree-content');
+
+        // Draw connections first (so they appear behind everything)
+        const connectionsGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        treeContent.appendChild(connectionsGroup);
+
+        // Draw tier labels (after connections, so they appear on top)
+        tierLabels.forEach(t => {
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            group.setAttribute('filter', 'url(#text-glow)');
+
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', 1000);
+            text.setAttribute('y', t.y);
+            text.setAttribute('class', 'tier-label');
+            text.setAttribute('text-anchor', 'middle');
+            text.textContent = t.label;
+            group.appendChild(text);
+
+            if (t.subtitle) {
+                const sub = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                sub.setAttribute('x', 1000);
+                sub.setAttribute('y', t.y + 20);
+                sub.setAttribute('class', 'tier-subtitle');
+                sub.setAttribute('text-anchor', 'middle');
+                sub.textContent = t.subtitle;
+                group.appendChild(sub);
+            }
+
+            treeContent.appendChild(group);
+        });
+
+        // Draw connections into the connections group (rendered first, appears behind)
+        connections.forEach(([fromId, toId]) => {
+            const from = nodes.find(n => n.id === fromId);
+            const to = nodes.find(n => n.id === toId);
+
+            const fromH = from.tier === 5 ? apexHeight : nodeHeight;
+            const toH = to.tier === 5 ? apexHeight : nodeHeight;
+
+            const startX = from.x;
+            const startY = from.y + fromH / 2;
+            const endX = to.x;
+            const endY = to.y - toH / 2;
+
+            const midY = (startY + endY) / 2;
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const d = `M ${startX} ${startY} C ${startX} ${midY}, ${endX} ${midY}, ${endX} ${endY}`;
+            path.setAttribute('d', d);
+            path.setAttribute('class', 'connection');
+            connectionsGroup.appendChild(path);
+        });
+
+        // Draw nodes
+        nodes.forEach(node => {
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            const isApex = node.tier === 5;
+            const w = isApex ? apexWidth : nodeWidth;
+            const h = isApex ? apexHeight : nodeHeight;
+
+            // Rectangle
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('x', node.x - w / 2);
+            rect.setAttribute('y', node.y - h / 2);
+            rect.setAttribute('width', w);
+            rect.setAttribute('height', h);
+            rect.setAttribute('rx', 8);
+            rect.setAttribute('class', isApex ? 'node-rect apex' : 'node-rect');
+            group.appendChild(rect);
+
+            // Number badge
+            const num = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            num.setAttribute('x', node.x - w / 2 + 10);
+            num.setAttribute('y', node.y - h / 2 + 18);
+            num.setAttribute('class', 'node-number');
+            num.textContent = node.id;
+            group.appendChild(num);
+
+            // Law badge
+            const law = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            law.setAttribute('x', node.x + w / 2 - 10);
+            law.setAttribute('y', node.y - h / 2 + 18);
+            law.setAttribute('text-anchor', 'end');
+            law.setAttribute('class', 'node-law');
+            law.textContent = node.law;
+            group.appendChild(law);
+
+            // Title
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            title.setAttribute('x', node.x);
+            title.setAttribute('y', node.y - h / 2 + 38);
+            title.setAttribute('text-anchor', 'middle');
+            title.setAttribute('class', 'node-title');
+            title.textContent = node.title;
+            group.appendChild(title);
+
+            // Description (using foreignObject for auto-wrap)
+            const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+            fo.setAttribute('x', node.x - w / 2 + 10);
+            fo.setAttribute('y', node.y - h / 2 + 42);
+            fo.setAttribute('width', w - 20);
+            fo.setAttribute('height', h - 56);
+            const div = document.createElement('div');
+            div.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+            div.style.cssText = 'color: #888; font-size: 10px; text-align: center; line-height: 1.4; font-family: system-ui, -apple-system, sans-serif;';
+            div.textContent = node.desc;
+            fo.appendChild(div);
+            group.appendChild(fo);
+
+            // Requirements
+            const req = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            req.setAttribute('x', node.x);
+            req.setAttribute('y', node.y + h / 2 - 10);
+            req.setAttribute('text-anchor', 'middle');
+            req.setAttribute('class', 'node-req');
+            req.textContent = '← ' + node.requires;
+            group.appendChild(req);
+
+            treeContent.appendChild(group);
+        });
+
+        // Pan and zoom
+        const svg = document.getElementById('tree-svg');
+        const container = document.getElementById('tree-container');
+
+        let isPanning = false;
+        let startX, startY;
+        let viewBox = { x: 0, y: 0, w: 2000, h: 1400 };
+
+        function updateViewBox() {
+            svg.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+        }
+
+        function centerView() {
+            const rect = container.getBoundingClientRect();
+            const aspect = rect.width / rect.height;
+            const svgAspect = 2000 / 1400;
+
+            if (aspect > svgAspect) {
+                viewBox.h = 1400;
+                viewBox.w = viewBox.h * aspect;
+                viewBox.x = (2000 - viewBox.w) / 2;
+                viewBox.y = 0;
+            } else {
+                viewBox.w = 2000;
+                viewBox.h = viewBox.w / aspect;
+                viewBox.x = 0;
+                viewBox.y = 0;
+            }
+            updateViewBox();
+        }
+
+        centerView();
+        window.addEventListener('resize', centerView);
+
+        container.addEventListener('mousedown', (e) => {
+            isPanning = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isPanning) return;
+            const dx = (e.clientX - startX) * (viewBox.w / container.clientWidth);
+            const dy = (e.clientY - startY) * (viewBox.h / container.clientHeight);
+            viewBox.x -= dx;
+            viewBox.y -= dy;
+            startX = e.clientX;
+            startY = e.clientY;
+            updateViewBox();
+        });
+
+        container.addEventListener('mouseup', () => {
+            isPanning = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isPanning = false;
+            container.style.cursor = 'grab';
+        });
+
+        let lastTouchX, lastTouchY;
+
+        container.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                isPanning = true;
+                lastTouchX = e.touches[0].clientX;
+                lastTouchY = e.touches[0].clientY;
+            }
+        });
+
+        container.addEventListener('touchmove', (e) => {
+            if (!isPanning || e.touches.length !== 1) return;
+            e.preventDefault();
+            const dx = (e.touches[0].clientX - lastTouchX) * (viewBox.w / container.clientWidth);
+            const dy = (e.touches[0].clientY - lastTouchY) * (viewBox.h / container.clientHeight);
+            viewBox.x -= dx;
+            viewBox.y -= dy;
+            lastTouchX = e.touches[0].clientX;
+            lastTouchY = e.touches[0].clientY;
+            updateViewBox();
+        });
+
+        container.addEventListener('touchend', () => {
+            isPanning = false;
+        });
+
+        container.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const factor = e.deltaY > 0 ? 1.1 : 0.9;
+            zoom(factor, e.clientX, e.clientY);
+        });
+
+        function zoom(factor, clientX, clientY) {
+            const rect = container.getBoundingClientRect();
+            const mouseX = clientX - rect.left;
+            const mouseY = clientY - rect.top;
+            const svgX = viewBox.x + (mouseX / rect.width) * viewBox.w;
+            const svgY = viewBox.y + (mouseY / rect.height) * viewBox.h;
+
+            const newW = viewBox.w * factor;
+            const newH = viewBox.h * factor;
+
+            if (newW < 400 || newW > 6000) return;
+
+            viewBox.x = svgX - (mouseX / rect.width) * newW;
+            viewBox.y = svgY - (mouseY / rect.height) * newH;
+            viewBox.w = newW;
+            viewBox.h = newH;
+            updateViewBox();
+        }
+
+        document.getElementById('zoom-in').addEventListener('click', () => {
+            const rect = container.getBoundingClientRect();
+            zoom(0.8, rect.width / 2 + rect.left, rect.height / 2 + rect.top);
+        });
+
+        document.getElementById('zoom-out').addEventListener('click', () => {
+            const rect = container.getBoundingClientRect();
+            zoom(1.25, rect.width / 2 + rect.left, rect.height / 2 + rect.top);
+        });
+
+        document.getElementById('reset').addEventListener('click', centerView);
+    </script>
+</body>
+</html>

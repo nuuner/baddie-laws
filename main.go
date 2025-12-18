@@ -42,127 +42,171 @@ type LawScore struct {
 var questions = []Question{
 	{
 		ID:   1,
-		Text: "You're about to give a presentation and realize you forgot to prepare one slide. You:",
+		Text: "You're presenting and realize you missed a slide. What feels most natural?",
 		Law:  "L1: Confidence",
 		Options: []Option{
-			{Text: "Panic and apologize profusely to the audience", Score: 1},
-			{Text: "Nervously skip over it hoping no one notices", Score: 2},
-			{Text: "Acknowledge it briefly and move on smoothly", Score: 3},
-			{Text: "Improvise confidently as if it was always the plan", Score: 4},
+			{Text: "Acknowledge it and offer to send the missing info later", Score: 2},
+			{Text: "Adapt on the fly - the audience won't know the difference", Score: 4},
+			{Text: "Take a moment to apologize and explain what happened", Score: 1},
+			{Text: "Keep your composure and weave the content into what's next", Score: 3},
 		},
 	},
 	{
 		ID:   2,
-		Text: "Someone questions your decision in front of others. You:",
+		Text: "Someone challenges your decision publicly. How do you typically respond?",
 		Law:  "L1: Confidence",
 		Options: []Option{
-			{Text: "Immediately second-guess yourself and backtrack", Score: 1},
-			{Text: "Get defensive and argue your point aggressively", Score: 2},
-			{Text: "Calmly explain your reasoning once", Score: 3},
-			{Text: "Stand firm with quiet certainty, no explanation needed", Score: 4},
+			{Text: "Hold your position - you've thought this through", Score: 4},
+			{Text: "Walk them through your reasoning to get them on board", Score: 3},
+			{Text: "Push back firmly so they understand you're serious", Score: 2},
+			{Text: "Consider their perspective - they might have a point", Score: 1},
 		},
 	},
 	{
 		ID:   3,
-		Text: "You spent 6 hours perfecting your outfit for an event. When someone asks about it, you:",
+		Text: "You put real effort into tonight's look. Someone compliments you. You say:",
 		Law:  "L2: Effortless",
 		Options: []Option{
-			{Text: "Tell them exactly how long it took and every detail", Score: 1},
-			{Text: "Humble brag about finding it last minute", Score: 2},
-			{Text: "Casually say 'oh, this old thing?'", Score: 3},
-			{Text: "Simply smile and accept the compliment gracefully", Score: 4},
+			{Text: "Thanks! I actually found this piece at the most amazing place...", Score: 2},
+			{Text: "You're sweet - just threw something together", Score: 3},
+			{Text: "That's kind of you", Score: 4},
+			{Text: "Oh this? Let me tell you about the hunt for these shoes", Score: 1},
 		},
 	},
 	{
 		ID:   4,
-		Text: "You achieved something impressive after months of hard work. On social media, you:",
+		Text: "You landed something big after months of work. Time to share it?",
 		Law:  "L2: Effortless",
 		Options: []Option{
-			{Text: "Post a detailed journey of every struggle", Score: 1},
-			{Text: "Share it with a long caption about the grind", Score: 2},
-			{Text: "Post a simple photo with minimal caption", Score: 3},
-			{Text: "Let others discover it naturally, or don't post at all", Score: 4},
+			{Text: "A tasteful post - let the achievement speak for itself", Score: 3},
+			{Text: "Share the story - the journey is what makes it meaningful", Score: 1},
+			{Text: "Maybe mention it if it comes up naturally", Score: 4},
+			{Text: "Celebrate the win with a caption about what it took", Score: 2},
 		},
 	},
 	{
 		ID:   5,
-		Text: "You catch yourself nerding out about your favorite hobby. You:",
+		Text: "You're deep in conversation about something you love. You notice others glazing over. You:",
 		Law:  "L3: Balance",
 		Options: []Option{
-			{Text: "Feel embarrassed and quickly change the subject", Score: 1},
-			{Text: "Apologize for being 'such a nerd'", Score: 2},
-			{Text: "Own it but read the room for interest", Score: 3},
-			{Text: "Embrace it fully - your passion is magnetic", Score: 4},
+			{Text: "Wrap it up smoothly and ask about their interests", Score: 3},
+			{Text: "Keep going - genuine enthusiasm is refreshing", Score: 4},
+			{Text: "Laugh it off and admit you got carried away", Score: 2},
+			{Text: "Pivot to something more universally relatable", Score: 1},
 		},
 	},
 	{
 		ID:   6,
-		Text: "At a party, someone asks what you do for fun. You:",
+		Text: "Someone at a social event asks what you're into. You:",
 		Law:  "L3: Balance",
 		Options: []Option{
-			{Text: "List only 'cool' hobbies and hide your real interests", Score: 1},
-			{Text: "Mention safe, generic activities", Score: 2},
-			{Text: "Share your genuine interests with confidence", Score: 3},
-			{Text: "Make even your quirkiest hobby sound intriguing", Score: 4},
+			{Text: "Share what you're genuinely excited about lately", Score: 3},
+			{Text: "Mention a few things that usually land well", Score: 2},
+			{Text: "Turn it into something they'll want to hear more about", Score: 4},
+			{Text: "Keep it general - no need to overshare with strangers", Score: 1},
 		},
 	},
 	{
 		ID:   7,
-		Text: "There's an awkward silence in a conversation. You:",
+		Text: "The conversation hits a lull. What's your instinct?",
 		Law:  "L4: Mystery",
 		Options: []Option{
-			{Text: "Frantically fill it with nervous chatter", Score: 1},
-			{Text: "Make a self-deprecating joke to ease tension", Score: 2},
-			{Text: "Wait comfortably for someone else to speak", Score: 3},
-			{Text: "Let the silence work for you - it builds intrigue", Score: 4},
+			{Text: "Sit with it - sometimes silence is comfortable", Score: 3},
+			{Text: "Use it as a natural pause before moving on", Score: 4},
+			{Text: "Bridge the gap with a light comment or joke", Score: 2},
+			{Text: "Jump in with a new topic to keep things flowing", Score: 1},
 		},
 	},
 	{
 		ID:   8,
-		Text: "Someone asks about your weekend plans. You:",
+		Text: "Someone asks what you're up to this weekend. You say:",
 		Law:  "L4: Mystery",
 		Options: []Option{
-			{Text: "Give a detailed hour-by-hour breakdown", Score: 1},
-			{Text: "Over-explain to fill the conversation", Score: 2},
-			{Text: "Give a brief, honest answer", Score: 3},
-			{Text: "Keep it vague and intriguing - 'I have a few things lined up'", Score: 4},
+			{Text: "A few things here and there - should be good", Score: 4},
+			{Text: "Oh, just the usual stuff - nothing too exciting", Score: 2},
+			{Text: "Actually, I've got [detailed Saturday and Sunday plans]...", Score: 1},
+			{Text: "Some plans with friends, maybe check out that new spot", Score: 3},
 		},
 	},
 	{
 		ID:   9,
-		Text: "You realize your current image no longer represents who you want to be. You:",
+		Text: "You've outgrown your current vibe. What's your approach?",
 		Law:  "L5: Reinvention",
 		Options: []Option{
-			{Text: "Feel stuck - 'this is just who I am'", Score: 1},
-			{Text: "Make small changes but worry what others will think", Score: 2},
-			{Text: "Gradually evolve while staying true to yourself", Score: 3},
-			{Text: "Boldly reinvent yourself without seeking permission", Score: 4},
+			{Text: "Start fresh - who you were doesn't define who you'll be", Score: 4},
+			{Text: "Evolve naturally over time without making it a thing", Score: 3},
+			{Text: "Test the waters with small updates first", Score: 2},
+			{Text: "Accept that people have certain expectations of you", Score: 1},
 		},
 	},
 	{
 		ID:   10,
-		Text: "How do you set standards for how others treat you?",
+		Text: "When it comes to how people treat you, which sounds most like you?",
 		Law:  "L6: Royalty",
 		Options: []Option{
-			{Text: "Accept whatever treatment comes your way", Score: 1},
-			{Text: "Hint at boundaries but rarely enforce them", Score: 2},
-			{Text: "Communicate boundaries when crossed", Score: 3},
-			{Text: "Your energy naturally commands respect - no words needed", Score: 4},
+			{Text: "I speak up when something crosses a line", Score: 3},
+			{Text: "People generally know where I stand without me saying much", Score: 4},
+			{Text: "I try to be flexible - relationships require compromise", Score: 1},
+			{Text: "I drop hints when something bothers me", Score: 2},
+		},
+	},
+	{
+		ID:   11,
+		Text: "Your style used to work, but lately it feels off. You:",
+		Law:  "L5: Reinvention",
+		Options: []Option{
+			{Text: "Experiment with something completely different", Score: 4},
+			{Text: "Tweak a few things and see how it feels", Score: 2},
+			{Text: "Stick with what's familiar - it's worked before", Score: 1},
+			{Text: "Refresh gradually as inspiration strikes", Score: 3},
+		},
+	},
+	{
+		ID:   12,
+		Text: "People remember you a certain way. Does that shape your choices?",
+		Law:  "L5: Reinvention",
+		Options: []Option{
+			{Text: "Somewhat - consistency builds trust", Score: 2},
+			{Text: "Not really - I do what feels right now", Score: 4},
+			{Text: "I try to meet their expectations mostly", Score: 1},
+			{Text: "I balance who I was with who I'm becoming", Score: 3},
+		},
+	},
+	{
+		ID:   13,
+		Text: "Someone keeps canceling plans with you last minute. You:",
+		Law:  "L6: Royalty",
+		Options: []Option{
+			{Text: "Stop initiating - they'll reach out if they want to", Score: 4},
+			{Text: "Give them another chance, things happen", Score: 1},
+			{Text: "Mention it casually next time you talk", Score: 2},
+			{Text: "Have a direct conversation about it", Score: 3},
+		},
+	},
+	{
+		ID:   14,
+		Text: "You're at a gathering and someone talks over you repeatedly. You:",
+		Law:  "L6: Royalty",
+		Options: []Option{
+			{Text: "Let it go - not worth the awkwardness", Score: 1},
+			{Text: "Finish your thought firmly when there's a gap", Score: 3},
+			{Text: "Continue as if they hadn't interrupted", Score: 4},
+			{Text: "Make a lighthearted comment about being interrupted", Score: 2},
 		},
 	},
 }
 
 func getScoreTitle(percentage float64) (string, string) {
 	switch {
-	case percentage >= 90:
+	case percentage >= 96:
 		return "Supreme Baddie", "You've mastered all the laws. Your presence commands attention and respect effortlessly. You embody confidence, mystery, and royalty in everything you do."
-	case percentage >= 75:
+	case percentage >= 85:
 		return "Certified Baddie", "You're well on your way to baddie mastery. You understand the power of confidence and mystery, with just a few areas to refine."
-	case percentage >= 60:
+	case percentage >= 72:
 		return "Rising Baddie", "You have strong baddie instincts but sometimes let doubt creep in. Keep trusting yourself and saying less - your glow up is in progress."
-	case percentage >= 45:
+	case percentage >= 58:
 		return "Baddie in Training", "You're learning the laws but haven't fully internalized them yet. Focus on building unshakeable confidence and embracing your authentic self."
-	case percentage >= 30:
+	case percentage >= 42:
 		return "Aspiring Baddie", "You have potential but often prioritize others' perceptions over your own power. Time to start treating yourself like the prize you are."
 	default:
 		return "Baddie Novice", "Your baddie journey is just beginning. Study the laws, practice confidence, and remember: you deserve to take up space."
@@ -246,6 +290,10 @@ func main() {
 
 	router.GET("/results", func(c *gin.Context) {
 		c.HTML(200, "results.html", nil)
+	})
+
+	router.GET("/roadmap", func(c *gin.Context) {
+		c.HTML(200, "roadmap.html", nil)
 	})
 
 	router.Run() // listens on 0.0.0.0:8080 by default
