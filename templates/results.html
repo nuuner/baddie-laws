@@ -133,7 +133,7 @@
         }
 
         .law-score {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .law-header {
@@ -164,6 +164,20 @@
             background: linear-gradient(90deg, #444, #fff);
             border-radius: 3px;
             transition: width 0.5s ease;
+        }
+
+        .law-explanation {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 6px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .law-tag {
+            color: #888;
+            font-style: normal;
+            font-weight: 500;
         }
 
         .actions {
@@ -321,9 +335,19 @@
                 'L6: Royalty': 'Royalty'
             };
 
+            const lawExplanations = {
+                'L1: Confidence': 'L1 — Project confidence even when you\'re nervous inside.',
+                'L2: Effortless': 'L2 — Make everything look natural, even the hard-earned wins.',
+                'L3: Balance': 'L3 — Balance quirks with poise; neither too serious nor too goofy.',
+                'L4: Mystery': 'L4 — Keep them guessing; an air of mystery is magnetic.',
+                'L5: Reinvention': 'L5 — Evolve constantly; the best version of you is always ahead.',
+                'L6: Royalty': 'L6 — Demand high standards; treat yourself like a prize to be treated like one.'
+            };
+
             result.lawBreakdown.forEach((law, index) => {
                 const percentage = (law.score / law.maxScore) * 100;
                 const displayName = lawNames[law.law] || law.law;
+                const explanation = lawExplanations[law.law] || '';
 
                 const lawDiv = document.createElement('div');
                 lawDiv.className = 'law-score';
@@ -335,6 +359,7 @@
                     <div class="law-bar">
                         <div class="law-bar-fill" style="width: 0%"></div>
                     </div>
+                    <div class="law-explanation">${explanation}</div>
                 `;
                 lawBreakdown.appendChild(lawDiv);
 
