@@ -32,6 +32,40 @@
             align-items: center;
         }
 
+        .page-wrapper {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            gap: 80px;
+            padding: 40px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .hero-image {
+            flex-shrink: 0;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 1024px) {
+            .page-wrapper {
+                flex-direction: column;
+                gap: 40px;
+                padding: 20px;
+            }
+
+            .hero-image {
+                max-width: 100%;
+                order: -1;
+            }
+        }
+
         h1 {
             font-size: 3rem;
             margin-bottom: 60px;
@@ -68,99 +102,139 @@
             color: #999;
         }
 
-        .quiz-link {
-            display: inline-block;
-            padding: 16px 32px;
-            background-color: #fff;
-            color: #000;
-            text-decoration: none;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            border-radius: 6px;
-            transition: background-color 0.2s ease;
-        }
-
-        .quiz-link:hover {
-            background-color: #ddd;
-        }
-
         .links {
             display: flex;
-            gap: 16px;
+            gap: 24px;
             margin-top: 60px;
         }
 
-        .secondary-link {
-            display: inline-block;
-            padding: 16px 32px;
-            background-color: transparent;
-            color: #999;
-            text-decoration: none;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            border-radius: 6px;
-            border: 1px solid #333;
-            transition: all 0.2s ease;
+        .icon-link {
+            display: block;
+            width: 180px;
+            position: relative;
         }
 
-        .secondary-link:hover {
-            color: #fff;
-            border-color: #555;
+        .icon-link img {
+            width: 100%;
+            height: auto;
+            transition: opacity 0.2s ease;
+        }
+
+        .icon-link .hover-img {
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            opacity: 0;
+        }
+
+        .icon-link:hover .default-img {
+            opacity: 0;
+        }
+
+        .icon-link:hover .hover-img {
+            opacity: 1;
+        }
+
+        .definition {
+            text-align: left;
+            margin-bottom: 60px;
+            max-width: 480px;
+        }
+
+        .definition-term {
+            font-size: 1.8rem;
+            font-style: italic;
+            margin-bottom: 4px;
+        }
+
+        .definition-pronunciation {
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .definition-text {
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #aaa;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Baddie laws</h1>
-        <div class="laws">
-        <div class="law">
-            <span class="law-prefix">L1</span>
-            <div class="law-content">
-                <span>Be Confident in Everything You Do</span>
-                <span class="law-subtitle">Eliminate hesitation; a bold mistake is better than a timid success.</span>
+    <div class="page-wrapper">
+        <div class="hero-image">
+            <img src="/static/images/hero.webp" alt="Posture comparison - Bad posture vs Upright with Aura">
+        </div>
+        <div class="content">
+            <h1>Baddie laws</h1>
+            <div class="definition">
+                <p class="definition-term">bad·die</p>
+                <p class="definition-pronunciation">/ˈbædɪ/</p>
+                <p class="definition-text">
+                    A self-assured individual who commands attention through composure rather than noise.
+                    Although they do not seek approval, their autonomy creates a natural gravitational pull;
+                    others actively seek their proximity and emulate their behavior.
+                    They set firm boundaries without explanation.
+                    Their value is established by their results, not their effort.
+                </p>
             </div>
-        </div>
-        <div class="law">
-            <span class="law-prefix">L2</span>
-            <div class="law-content">
-                <span>Make It Seem Effortless</span>
-                <span class="law-subtitle">Conceal your labor; let the world see the result, never the sweat.</span>
+            <div class="laws">
+                <div class="law">
+                    <span class="law-prefix">L1</span>
+                    <div class="law-content">
+                        <span>Be Confident in Everything You Do</span>
+                        <span class="law-subtitle">Eliminate hesitation; a bold mistake is better than a timid success.</span>
+                    </div>
+                </div>
+                <div class="law">
+                    <span class="law-prefix">L2</span>
+                    <div class="law-content">
+                        <span>Make It Seem Effortless</span>
+                        <span class="law-subtitle">Conceal your labor; let the world see the result, never the sweat.</span>
+                    </div>
+                </div>
+                <div class="law">
+                    <span class="law-prefix">L3</span>
+                    <div class="law-content">
+                        <span>Offset Dorkiness with Baddie Behavior</span>
+                        <span class="law-subtitle">Humanize your power; use relatability to shield yourself from envy.</span>
+                    </div>
+                </div>
+                <div class="law">
+                    <span class="law-prefix">L4</span>
+                    <div class="law-content">
+                        <span>Always Say Less Than Necessary</span>
+                        <span class="law-subtitle">Master the silence; let others reveal themselves while you remain a mystery.</span>
+                    </div>
+                </div>
+                <div class="law">
+                    <span class="law-prefix">L5</span>
+                    <div class="law-content">
+                        <span>Re-create Yourself</span>
+                        <span class="law-subtitle">Command your narrative; don't inherit an identity, curate one.</span>
+                    </div>
+                </div>
+                <div class="law">
+                    <span class="law-prefix">L6</span>
+                    <div class="law-content">
+                        <span>Be Royal in Your Own Fashion</span>
+                        <span class="law-subtitle">Demand high standards; treat yourself like a prize to be treated like one.</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="law">
-            <span class="law-prefix">L3</span>
-            <div class="law-content">
-                <span>Offset Dorkiness with Baddie Behavior</span>
-                <span class="law-subtitle">Humanize your power; use relatability to shield yourself from envy.</span>
+            <div class="links">
+                <a href="/quiz" class="icon-link" title="Evaluate Yourself">
+                    <img src="/static/images/btn-quiz-default.webp" alt="Evaluation Quiz" class="default-img">
+                    <img src="/static/images/btn-quiz-hover.webp" alt="Evaluation Quiz" class="hover-img">
+                </a>
+                <a href="/roadmap" class="icon-link" title="View Roadmap">
+                    <img src="/static/images/btn-learn-default.webp" alt="Learning Section" class="default-img">
+                    <img src="/static/images/btn-learn-hover.webp" alt="Learning Section" class="hover-img">
+                </a>
             </div>
-        </div>
-        <div class="law">
-            <span class="law-prefix">L4</span>
-            <div class="law-content">
-                <span>Always Say Less Than Necessary</span>
-                <span class="law-subtitle">Master the silence; let others reveal themselves while you remain a mystery.</span>
-            </div>
-        </div>
-        <div class="law">
-            <span class="law-prefix">L5</span>
-            <div class="law-content">
-                <span>Re-create Yourself</span>
-                <span class="law-subtitle">Command your narrative; don't inherit an identity, curate one.</span>
-            </div>
-        </div>
-        <div class="law">
-            <span class="law-prefix">L6</span>
-            <div class="law-content">
-                <span>Be Royal in Your Own Fashion</span>
-                <span class="law-subtitle">Demand high standards; treat yourself like a prize to be treated like one.</span>
-            </div>
-        </div>
-        </div>
-        <div class="links">
-            <a href="/quiz" class="quiz-link">Evaluate Yourself</a>
-            <a href="/roadmap" class="secondary-link">View Roadmap</a>
         </div>
     </div>
 </body>

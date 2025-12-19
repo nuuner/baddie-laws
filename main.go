@@ -266,6 +266,7 @@ func main() {
 	})
 
 	router.LoadHTMLGlob("templates/*")
+	router.Static("/static", "./static")
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html", nil)
