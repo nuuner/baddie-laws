@@ -199,17 +199,17 @@ var questions = []Question{
 func getScoreTitle(percentage float64) (string, string) {
 	switch {
 	case percentage >= 96:
-		return "Supreme Baddie", "You've mastered all the laws. Your presence commands attention and respect effortlessly. You embody confidence, mystery, and royalty in everything you do."
+		return "Fully Ascended", "You've mastered all the laws. Your presence commands attention and respect effortlessly. You embody confidence, mystery, and royalty in everything you do."
 	case percentage >= 85:
-		return "Certified Baddie", "You're well on your way to baddie mastery. You understand the power of confidence and mystery, with just a few areas to refine."
+		return "Certified Ascended", "You're well on your way to full ascension. You understand the power of confidence and mystery, with just a few areas to refine."
 	case percentage >= 72:
-		return "Rising Baddie", "You have strong baddie instincts but sometimes let doubt creep in. Keep trusting yourself and saying less - your glow up is in progress."
+		return "Rising Ascended", "You have strong ascended instincts but sometimes let doubt creep in. Keep trusting yourself and saying less - your transformation is in progress."
 	case percentage >= 58:
-		return "Baddie in Training", "You're learning the laws but haven't fully internalized them yet. Focus on building unshakeable confidence and embracing your authentic self."
+		return "Ascending", "You're learning the laws but haven't fully internalized them yet. Focus on building unshakeable confidence and embracing your authentic self."
 	case percentage >= 42:
-		return "Aspiring Baddie", "You have potential but often prioritize others' perceptions over your own power. Time to start treating yourself like the prize you are."
+		return "Aspiring Ascended", "You have potential but often prioritize others' perceptions over your own power. Time to start treating yourself like the prize you are."
 	default:
-		return "Baddie Novice", "Your baddie journey is just beginning. Study the laws, practice confidence, and remember: you deserve to take up space."
+		return "Ascension Initiate", "Your ascension journey is just beginning. Study the laws, practice confidence, and remember: you deserve to take up space."
 	}
 }
 
