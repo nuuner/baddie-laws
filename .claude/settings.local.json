@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(wc:*)",
+      "Bash(go mod graph:*)",
+      "Bash(git -C /Users/domeni/Documents/baddie-laws config:*)",
+      "Bash(go vet:*)",
+      "Bash(identify:*)",
+      "Bash(convert:*)",
+      "Bash(go mod tidy:*)",
+      "Bash(magick:*)"
+    ]
+  }
+}
